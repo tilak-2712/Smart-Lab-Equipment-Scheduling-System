@@ -1,0 +1,90 @@
+{
+  "equipment": {
+    "E001": {
+      "id": "E001",
+      "name": "Oscilloscope",
+      "status": "BOOKED",
+      "current_booking": {
+        "booking_id": "B0017",
+        "usn": "1DS21CS001",
+        "equipment_id": "E001",
+        "start_time": "2026-05-19T09:21:00",
+        "end_time": "2026-05-19T09:22:00",
+        "priority_year": "4th Year",
+        "booked_at": "2026-05-19T09:20:17.724824"
+      },
+      "bookings": [
+        {
+          "booking_id": "B0016",
+          "usn": "1DS24CS182",
+          "equipment_id": "E001",
+          "start_time": "2026-05-19T09:02:00",
+          "end_time": "2026-05-19T09:03:00",
+          "priority_year": "4th Year",
+          "booked_at": "2026-05-19T09:01:49.117739"
+        },
+        {
+          "booking_id": "B0017",
+          "usn": "1DS21CS001",
+          "equipment_id": "E001",
+          "start_time": "2026-05-19T09:21:00",
+          "end_time": "2026-05-19T09:22:00",
+          "priority_year": "4th Year",
+          "booked_at": "2026-05-19T09:20:17.724824"
+        }
+      ],
+      "waitlist": []
+    },
+    "E002": {
+      "id": "E002",
+      "name": "3D Printer",
+      "status": "BOOKED",
+      "current_booking": {
+        "booking_id": "B0018",
+        "usn": "1DS21CS001",
+        "equipment_id": "E002",
+        "start_time": "2026-05-19T09:25:00",
+        "end_time": "2026-05-19T09:26:00",
+        "priority_year": "4th Year",
+        "booked_at": "2026-05-19T09:25:11.047962"
+      },
+      "bookings": [
+        {
+          "booking_id": "B0018",
+          "usn": "1DS21CS001",
+          "equipment_id": "E002",
+          "start_time": "2026-05-19T09:25:00",
+          "end_time": "2026-05-19T09:26:00",
+          "priority_year": "4th Year",
+          "booked_at": "2026-05-19T09:25:11.047962"
+        }
+      ],
+      "waitlist": []
+    },
+    "E003": {
+      "id": "E003",
+      "name": "Soldering Station",
+      "status": "AVAILABLE",
+      "current_booking": null,
+      "bookings": [],
+      "waitlist": []
+    },
+    "E004": {
+      "id": "E004",
+      "name": "Arduino Kit",
+      "status": "AVAILABLE",
+      "current_booking": null,
+      "bookings": [],
+      "waitlist": []
+    },
+    "E005": {
+      "id": "E005",
+      "name": "Raspberry Pi",
+      "status": "AVAILABLE",
+      "current_booking": null,
+      "bookings": [],
+      "waitlist": []
+    }
+  },
+  "booking_counter": 19
+}

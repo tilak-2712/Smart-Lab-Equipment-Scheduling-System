@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLab — Equipment Scheduling System</title>
+  <meta name="description" content="Smart Lab Equipment Scheduling System — book, manage and track lab equipment with priority waitlist and conflict detection." />
+  <link rel="stylesheet" href="/static/style.css?v=8" />
+</head>
+<body>
+
+<!-- ════════════════════  NAVBAR  ════════════════════ -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <div class="logo-icon" aria-hidden="true">🔬</div>
+    <span>SmartLab</span>
+  </div>
+  <div class="navbar-right">
+    <span class="live-clock" id="live-clock">--:--:--</span>
+    <span class="navbar-college">Dayananda Sagar College of Engineering</span>
+  </div>
+</nav>
+
+<!-- ════════════════════  STATS BAR  ════════════════════ -->
+<div class="stats-bar" id="stats-bar">
+  <div class="stat-card">
+    <div class="stat-icon total">📦</div>
+    <div class="stat-info">
+      <span class="stat-value" id="stat-total">0</span>
+      <span class="stat-label">Total Equipment</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon available">✅</div>
+    <div class="stat-info">
+      <span class="stat-value" id="stat-available">0</span>
+      <span class="stat-label">Available</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon inuse">⚡</div>
+    <div class="stat-info">
+      <span class="stat-value" id="stat-inuse">0</span>
+      <span class="stat-label">In Use</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon booked">📅</div>
+    <div class="stat-info">
+      <span class="stat-value" id="stat-booked">0</span>
+      <span class="stat-label">Upcoming</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════  TOAST CONTAINER  ════════════════════ -->
+<div id="toast-container" role="status" aria-live="polite"></div>
+
+<!-- ════════════════════  EXPIRY BANNERS  ════════════════════ -->
+<div id="expiry-banner-container"></div>
+
+<!-- ════════════════════  MAIN GRID  ════════════════════ -->
+<div class="main-wrapper">
+
+  <!-- ── LEFT: Equipment Dashboard ─────────────────────────────────────────── -->
+  <section aria-labelledby="equip-heading">
+    <div class="section-header">
+      <h2 id="equip-heading">Lab Equipment</h2>
+      <span class="count-badge" id="equip-count">0 items</span>
+    </div>
+    <div class="equipment-grid" id="equipment-grid">
+      <!-- cards injected by JS -->
+      <div class="empty-msg">Loading equipment…</div>
+    </div>
+  </section>
+
+  <!-- ── RIGHT: Booking Panel + Active Bookings ─────────────────────────────── -->
+  <aside class="right-panel">
+
+    <!-- Booking Form -->
+    <div class="booking-panel">
+      <h2>New Booking</h2>
+      <form id="booking-form" novalidate>
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label for="usn">USN</label>
+            <input type="text" id="usn" name="usn"
+                   placeholder="e.g. 1DS21CS001" required />
+          </div>
+
+          <div class="form-group full">
+            <label for="equipment-select">Equipment</label>
+            <select id="equipment-select" name="equipment_id" required>
+              <option value="">— Select Equipment —</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="booking-date">Date</label>
+            <input type="date" id="booking-date" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label for="start-time">Start Time</label>
+            <input type="time" id="start-time" name="start_time" required />
+          </div>
+
+          <div class="form-group">
+            <label for="end-time">End Time</label>
+            <input type="time" id="end-time" name="end_time" required />
+          </div>
+
+          <div class="form-group full">
+            <label for="priority-year">Academic Year</label>
+            <select id="priority-year" name="priority_year" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year" selected>4th Year</option>
+            </select>
+          </div>
+
+        </div><!-- /form-grid -->
+
+        <button type="submit" class="btn-book" id="btn-book">
+          <span class="spinner" id="btn-spinner"></span>
+          <span id="btn-label">Book Equipment</span>
+        </button>
+      </form>
+    </div><!-- /booking-panel -->
+
+    <!-- Active Bookings -->
+    <div class="active-bookings-panel">
+      <h3>Active Bookings</h3>
+      <div class="booking-list" id="active-bookings-list">
+        <div class="empty-msg">No active bookings yet.</div>
+      </div>
+    </div>
+
+  </aside>
+</div><!-- /main-wrapper -->
+
+<!-- ════════════════════  WAITLIST SECTION  ════════════════════ -->
+<div class="bottom-section">
+  <div class="waitlist-section">
+    <div class="section-header">
+      <h2>Priority Waitlist</h2>
+    </div>
+    <table class="waitlist-table" id="waitlist-table" aria-label="Priority waitlist">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>USN</th>
+          <th>Equipment</th>
+          <th>Requested Slot</th>
+          <th>Priority Year</th>
+        </tr>
+      </thead>
+      <tbody id="waitlist-tbody">
+        <tr><td colspan="5" class="empty-msg">No one on the waitlist.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ════════════════════  INLINE JAVASCRIPT  ════════════════════ -->
+<script src="/static/app.js?v=8"></script>
+
+</body>
+</html>
